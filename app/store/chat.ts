@@ -30,6 +30,7 @@ import { useAccessStore } from "./access";
 import { collectModelsWithDefaultModel } from "../utils/model";
 import { createEmptyMask, Mask } from "./mask";
 
+import { translate_to_english } from "../utils/translate";
 const localStorage = safeLocalStorage();
 
 export type ChatMessageTool = {
@@ -109,7 +110,7 @@ function createEmptySession(): ChatSession {
   };
 }
 
-function getSummarizeModel(
+export function getSummarizeModel(
   currentModel: string,
   providerName: string,
 ): string[] {
@@ -365,7 +366,9 @@ export const useChatStore = createPersistStore(
       async onUserInput(content: string, attachImages?: string[]) {
         const session = get().currentSession();
         const modelConfig = session.mask.modelConfig;
-
+        if (session.mask.enableText2English) {
+          content = await translate_to_english(content, session);
+        }
         const userContent = fillTemplateWith(content, modelConfig);
         console.log("[User Input] after template: ", userContent);
 

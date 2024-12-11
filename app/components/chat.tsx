@@ -47,6 +47,9 @@ import PluginIcon from "../icons/plugin.svg";
 import ShortcutkeyIcon from "../icons/shortcutkey.svg";
 import ReloadIcon from "../icons/reload.svg";
 import HeadphoneIcon from "../icons/headphone.svg";
+import EnableText2EnglishIcon from "../icons/text2English_enable.svg";
+import DisableText2EnglishIcon from "../icons/text2English_disable.svg";
+
 import {
   ChatMessage,
   SubmitKey,
@@ -579,6 +582,25 @@ export function ChatActions(props: {
             icon={<SettingsIcon />}
           />
         )}
+        <ChatAction
+          text={"将中文转换为英文提问"}
+          onClick={() => {
+            chatStore.updateTargetSession(session, (session) => {
+              session.mask.enableText2English =
+                !session.mask.enableText2English;
+            });
+          }}
+          icon={
+            <>
+              {" "}
+              {session.mask.enableText2English ? (
+                <EnableText2EnglishIcon />
+              ) : (
+                <DisableText2EnglishIcon />
+              )}{" "}
+            </>
+          }
+        />
 
         {showUploadImage && (
           <ChatAction
@@ -637,7 +659,6 @@ export function ChatActions(props: {
           text={currentModelName}
           icon={<RobotIcon />}
         />
-
         {showModelSelector && (
           <Selector
             defaultSelectedValue={`${currentModel}@${currentProviderName}`}

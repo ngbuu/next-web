@@ -20,6 +20,7 @@ export type Mask = {
   plugin?: string[];
   enableArtifacts?: boolean;
   enableCodeFold?: boolean;
+  enableText2English?: boolean;
 };
 
 export const DEFAULT_MASK_STATE = {
@@ -44,6 +45,7 @@ export const createEmptyMask = () =>
     builtin: false,
     createdAt: Date.now(),
     plugin: [],
+    enableText2English: false,
   }) as Mask;
 
 export const useMaskStore = createPersistStore(
