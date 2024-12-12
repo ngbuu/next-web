@@ -251,6 +251,7 @@ Current model: {{model}}
 Current time: {{time}}
 Latex inline: \\(x^2\\) 
 Latex block: $$e=mc^2$$
+You should provide a detailed and comprehensive response, using as many words as necessary to thoroughly answer my questions, no matter what they are.
 `;
 
 export const SUMMARIZE_MODEL = "gpt-4o-mini";
