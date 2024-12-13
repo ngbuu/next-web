@@ -366,9 +366,7 @@ export const useChatStore = createPersistStore(
       async onUserInput(content: string, attachImages?: string[]) {
         const session = get().currentSession();
         const modelConfig = session.mask.modelConfig;
-        if (session.mask.enableText2English) {
-          content = await translate_to_english(content, session);
-        }
+
         const userContent = fillTemplateWith(content, modelConfig);
         console.log("[User Input] after template: ", userContent);
 
@@ -767,6 +765,13 @@ export const useChatStore = createPersistStore(
           lastInput,
         });
       },
+      async text2English(content: string): Promise<string> {
+        const session = get().currentSession();
+        if (session.mask.enableText2English) {
+          return await translate_to_english(content, session);
+        }
+        return content;
+      },
     };
 
     return methods;
@@ -834,7 +839,7 @@ export const useChatStore = createPersistStore(
         newState.sessions.forEach((s) => {
           const config = useAppConfig.getState();
           s.mask.modelConfig.compressModel = "";
-          s.mask.modelConfig.compressProviderName = "";
+          s.mask.modelConfig.compressProviderName = "" as ServiceProvider;
         });
       }
 

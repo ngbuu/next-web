@@ -973,6 +973,7 @@ function _Chat() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const scrollRef = useRef<HTMLDivElement>(null);
   const isScrolledToBottom = scrollRef?.current
@@ -1083,10 +1084,15 @@ function _Chat() {
       matchCommand.invoke();
       return;
     }
-    setIsLoading(true);
-    chatStore
-      .onUserInput(userInput, attachImages)
-      .then(() => setIsLoading(false));
+    setIsTranslating(true);
+    chatStore.text2English(userInput).then((input) => {
+      setIsTranslating(false);
+      userInput = input;
+      setIsLoading(true);
+      chatStore
+        .onUserInput(input, attachImages)
+        .then(() => setIsLoading(false));
+    });
     setAttachImages([]);
     chatStore.setLastInput(userInput);
     setUserInput("");
@@ -1321,6 +1327,19 @@ function _Chat() {
     return context
       .concat(session.messages as RenderMessage[])
       .concat(
+        isTranslating
+          ? [
+              {
+                ...createMessage({
+                  role: "user",
+                  content: "正在将您的问题转换成英文。。。",
+                }),
+                preview: true,
+              },
+            ]
+          : [],
+      )
+      .concat(
         isLoading
           ? [
               {
@@ -1352,6 +1371,7 @@ function _Chat() {
     isLoading,
     session.messages,
     userInput,
+    isTranslating,
   ]);
 
   const [msgRenderIndex, _setMsgRenderIndex] = useState(
