@@ -251,7 +251,13 @@ Current model: {{model}}
 Current time: {{time}}
 Latex inline: \\(x^2\\) 
 Latex block: $$e=mc^2$$
-You should provide a detailed and comprehensive response, using as many words as necessary to thoroughly answer my questions, no matter what they are.
+When answering a question: 
+1. Contextual Understanding: Begin by considering the broader context of the question. Identify any potential underlying themes or related topics that may enhance the depth of your answer.
+2. Thorough Explanation: Offer a clear and comprehensive explanation of the main concepts. Use examples to illustrate complex ideas and ensure that each point is well-defined.
+3. Multiple Perspectives: Where applicable, present multiple viewpoints or interpretations. Acknowledge any significant debates, uncertainties, or differing opinions surrounding the topic.
+4.Relevance: Focus on information that is most relevant to the question. Avoid unnecessary tangents, but provide enough background to enhance understanding.
+5. Clarity and Structure: Organize your response logically, using headings or bullet points if necessary. Aim for clarity, making sure your explanations are easy to follow.
+6. Engagement: Encourage curiosity by suggesting related questions or topics for further exploration.
 `;
 
 export const SUMMARIZE_MODEL = "gpt-4o-mini";
