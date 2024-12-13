@@ -86,6 +86,8 @@ import { useMaskStore } from "../store/mask";
 import { ProviderType } from "../utils/cloud";
 import { TTSConfigList } from "./tts-config";
 import { RealtimeConfigList } from "./realtime-chat/realtime-config";
+import { useAllModels } from "../utils/hooks";
+import { groupBy } from "lodash-es";
 
 function EditPromptModal(props: { id: string; onClose: () => void }) {
   const promptStore = usePromptStore();
@@ -1373,6 +1375,11 @@ export function Settings() {
         />
       </ListItem>
     </>
+  );
+  const allModels = useAllModels();
+  const groupModels = groupBy(
+    allModels.filter((v) => v.available),
+    "provider.providerName",
   );
 
   return (

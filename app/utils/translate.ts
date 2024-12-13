@@ -1,9 +1,4 @@
-import {
-  getSummarizeModel,
-  createMessage,
-  ChatMessage,
-  ChatSession,
-} from "../store/chat";
+import { createMessage, ChatMessage, ChatSession } from "../store/chat";
 import { ClientApi, getClientApi } from "../client/api";
 import { ServiceProvider } from "../constant";
 
@@ -11,8 +6,6 @@ export async function translate_to_english(
   content: string,
   session: ChatSession,
 ): Promise<string> {
-  let translated_content: string = "";
-
   const message: ChatMessage = createMessage({
     role: "user",
     content: content,
@@ -20,12 +13,10 @@ export async function translate_to_english(
 
   const modelConfig = session.mask.modelConfig;
 
-  const [model, providerName] = modelConfig.compressModel
-    ? [modelConfig.compressModel, modelConfig.compressProviderName]
-    : getSummarizeModel(
-        session.mask.modelConfig.model,
-        session.mask.modelConfig.providerName,
-      );
+  const [model, providerName] = [
+    modelConfig.translateModel,
+    modelConfig.translateProviderName,
+  ];
 
   const api: ClientApi = getClientApi(providerName as ServiceProvider);
 
@@ -53,7 +44,11 @@ export async function translate_to_english(
         if (responseRes?.status === 200) {
           resolve(message); // 将结果传递给 Promise 的 resolve
         } else {
-          reject(new Error("Failed to translate content")); // 失败时调用 reject
+          reject(
+            new Error(
+              "fail to tranlate key, check if you have provide a api key for translate model",
+            ),
+          ); // 失败时调用 reject
         }
       },
     });

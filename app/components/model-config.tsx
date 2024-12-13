@@ -20,7 +20,7 @@ export function ModelConfigList(props: {
   );
   const value = `${props.modelConfig.model}@${props.modelConfig?.providerName}`;
   const compressModelValue = `${props.modelConfig.compressModel}@${props.modelConfig?.compressProviderName}`;
-
+  const translateModelValue = `${props.modelConfig.translateModel}@${props.modelConfig?.translateProviderName}`;
   return (
     <>
       <ListItem title={Locale.Settings.Model}>
@@ -256,6 +256,31 @@ export function ModelConfigList(props: {
             props.updateConfig((config) => {
               config.compressModel = ModalConfigValidator.model(model);
               config.compressProviderName = providerName as ServiceProvider;
+            });
+          }}
+        >
+          {allModels
+            .filter((v) => v.available)
+            .map((v, i) => (
+              <option value={`${v.name}@${v.provider?.providerName}`} key={i}>
+                {v.displayName}({v.provider?.providerName})
+              </option>
+            ))}
+        </Select>
+      </ListItem>
+      <ListItem
+        title={"翻译模型"}
+        subTitle={"设置text2English以及对话翻译的模型"}
+      >
+        <Select
+          value={translateModelValue}
+          onChange={(e) => {
+            const [model, providerName] = getModelProvider(
+              e.currentTarget.value,
+            );
+            props.updateConfig((config) => {
+              config.translateModel = ModalConfigValidator.model(model);
+              config.translateProviderName = providerName as ServiceProvider;
             });
           }}
         >
